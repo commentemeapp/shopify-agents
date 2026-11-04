@@ -6,13 +6,13 @@
 
 **Cinco subagentes de Claude Code para Shopify y Shopify Plus, con el MCP oficial de Shopify.**
 
-[![versión](https://img.shields.io/github/v/tag/zeluizr/shopify-agents?label=versi%C3%B3n&labelColor=005278&color=FFBD38)](./CHANGELOG.md)
-[![licencia](https://img.shields.io/github/license/zeluizr/shopify-agents?label=licencia&labelColor=005278&color=FFBD38)](./LICENSE)
+[![versión](https://img.shields.io/github/v/tag/commentemeapp/shopify-agents?label=versi%C3%B3n&labelColor=005278&color=FFBD38)](./CHANGELOG.md)
+[![licencia](https://img.shields.io/github/license/commentemeapp/shopify-agents?label=licencia&labelColor=005278&color=FFBD38)](./LICENSE)
 
 ## Instalación
 
 ```bash
-/plugin marketplace add zeluizr/shopify-agents
+/plugin marketplace add commentemeapp/shopify-agents
 /plugin install shopify-agents@shopify-agents
 ```
 
@@ -127,7 +127,7 @@ Node >= 18 indicado arriba corresponde a ejecutar el servidor MCP. Las definicio
 [.mcp.json](plugins/shopify-agents/.mcp.json).
 
 ```bash
-git clone https://github.com/zeluizr/shopify-agents.git
+git clone https://github.com/commentemeapp/shopify-agents.git
 cd shopify-agents
 npm ci
 ./scripts/verificar.sh
@@ -160,4 +160,4 @@ Conventional Commits, rama desde `dev` y PR contra `dev`; un agente nuevo tiene 
 
 ---
 
-Hecho por [commente.me](https://commente.me) · hola@commente.me
+Hecho por [commente.me](https://www.commente.me) · hablecon@commente.me

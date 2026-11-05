@@ -5,6 +5,8 @@ las versiones siguen [SemVer](https://semver.org/lang/es/).
 
 ## [Sin publicar]
 
+## [0.1.1] - 2026-11-04
+
 ### Agregado
 
 - Cinco subagentes read-only: `shopify-explorer`, `shopify-reviewer`, `shopify-qa`, `shopify-integration-architect` y

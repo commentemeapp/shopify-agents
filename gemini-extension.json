@@ -1,0 +1,17 @@
+{
+	"name": "shopify-agents",
+	"version": "0.2.0",
+	"description": "Cinco subagentes para Shopify y Shopify Plus (exploración, revisión previa al deploy, QA, arquitectura de integraciones y documentación) más el servidor MCP @shopify/dev-mcp con la telemetría apagada: documentación, esquemas GraphQL y validación de Liquid sin salir del editor.",
+	"mcpServers": {
+		"shopify-dev": {
+			"command": "npx",
+			"args": [
+				"-y",
+				"@shopify/dev-mcp"
+			],
+			"env": {
+				"OPT_OUT_INSTRUMENTATION": "true"
+			}
+		}
+	}
+}

@@ -1,13 +1,12 @@
-<p align="center">
-	<img src="assets/banner.png" width="100%" alt="shopify-agents · Cinco subagentes de Claude Code para Shopify y Shopify Plus, con el MCP oficial de Shopify.">
-</p>
+![shopify-agents · Cinco subagentes de Claude Code para Shopify y Shopify Plus, con el MCP oficial de Shopify.](.github/assets/banner.png)
 
 # shopify-agents
 
 **Cinco subagentes de Claude Code para Shopify y Shopify Plus, con el MCP oficial de Shopify.**
 
-[![versión](https://img.shields.io/github/v/tag/commentemeapp/shopify-agents?label=versi%C3%B3n&labelColor=005278&color=FFBD38)](./CHANGELOG.md)
-[![licencia](https://img.shields.io/github/license/commentemeapp/shopify-agents?label=licencia&labelColor=005278&color=FFBD38)](./LICENSE)
+[![versión](https://badgen.net/github/tag/commentemeapp/shopify-agents?color=005278)](./CHANGELOG.md)
+[![licencia](https://badgen.net/github/license/commentemeapp/shopify-agents)](./LICENSE)
+[![último commit](https://badgen.net/github/last-commit/commentemeapp/shopify-agents/main)](https://github.com/commentemeapp/shopify-agents/commits/main)
 
 ## Instalación
 
@@ -156,13 +155,12 @@ npm ci
 node scripts/probar-mcp.mjs
 ```
 
-`scripts/verificar.sh` es el gate, el mismo que corre el CI: JSON válido, la misma versión en los tres manifiestos,
+`scripts/verificar.sh` es el gate y corre en tu máquina antes de cada merge (no hay CI en GitHub): JSON válido, la misma versión en los tres manifiestos,
 la configuración del servidor MCP (incluida la telemetría apagada), el frontmatter de cada agente (nombre igual al
 archivo, `description`, tool `Skill` presente, sin `Write` ni `Edit`, máximo cuatro skills precargadas, prefijo MCP
 propio y skills que existen en el Shopify AI Toolkit), `claude plugin validate --strict`, Prettier, `bash -n` y una
 búsqueda de rastros que no deben llegar a un repositorio público. `scripts/probar-mcp.mjs` arranca el servidor por
-stdio y falla si una herramienta que un agente declara no existe. El CI suma la búsqueda de secretos con gitleaks y el
-control del flujo de ramas.
+stdio y falla si una herramienta que un agente declara no existe.
 
 Para probar el plugin sin publicarlo:
 
@@ -180,6 +178,4 @@ Conventional Commits, rama desde `dev` y PR contra `dev`; un agente nuevo tiene 
 [docs/agentes.md](docs/agentes.md#por-qué-no-hay-más-agentes).
 [MIT](./LICENSE).
 
----
-
-Hecho por [commente.me](https://www.commente.me) · hablecon@commente.me
+_Hecho con amor y café por [zeluizr](https://github.com/zeluizr) y con la ayuda de [Claude](https://claude.ai/referral/Cz_UimA0NQ) ☕_

@@ -4,9 +4,7 @@
 
 **Cinco subagentes de Claude Code para Shopify y Shopify Plus, con el MCP oficial de Shopify.**
 
-[![versión](https://badgen.net/github/tag/commentemeapp/shopify-agents?color=005278)](./CHANGELOG.md)
-[![licencia](https://badgen.net/github/license/commentemeapp/shopify-agents)](./LICENSE)
-[![último commit](https://badgen.net/github/last-commit/commentemeapp/shopify-agents/main)](https://github.com/commentemeapp/shopify-agents/commits/main)
+Versión 0.2.0 · en desarrollo. Cambios en [CHANGELOG.md](CHANGELOG.md).
 
 ## Instalación
 
@@ -19,7 +17,36 @@ Reinicia Claude Code o corre `/reload-plugins`. Los agentes aparecen en el typea
 `shopify-agents:shopify-reviewer`, y el servidor MCP como `shopify-dev`. Si ya tenías `@shopify/dev-mcp` agregado con
 `claude mcp add`, quítalo con `claude mcp remove <nombre>` para no tener el servidor dos veces.
 
-## Uso rápido
+### En otros agentes
+
+Los cinco agentes también funcionan en Gemini CLI, Codex, GitHub Copilot y Cursor. Cada versión se genera desde los archivos de
+Claude Code con `scripts/exportar.mjs`: cambian el frontmatter y los nombres de las herramientas, el texto es el
+mismo. Fuera de Claude Code no hay skills precargadas, así que cada agente empieza diciendo cuales cargar; se instalan
+con `npx skills add <repositorio> -a <agente>`.
+
+| Agente         | Instalación                                                                                                                                                                                                                        |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Gemini CLI     | `gemini extensions install https://github.com/commentemeapp/shopify-agents`: trae los cinco agentes y el servidor MCP (`shopify-dev`)                                                                                              |
+| Codex          | Copia `adaptadores/codex/*.toml` a `~/.codex/agents/` y agrega el servidor MCP con los comandos de abajo                                                                                                                           |
+| GitHub Copilot | Copia `adaptadores/copilot/*.agent.md` a `~/.copilot/agents/` o a `.github/agents/` del proyecto; el servidor MCP va en `~/.copilot/mcp-config.json`, con el mismo `mcpServers` de [`.mcp.json`](plugins/shopify-agents/.mcp.json) |
+| Cursor         | Copia `adaptadores/cursor/*.md` a `~/.cursor/agents/` o a `.cursor/agents/` del proyecto; el servidor MCP va en `~/.cursor/mcp.json`, con el mismo `mcpServers`                                                                    |
+
+```bash
+codex mcp add shopify-dev --env OPT_OUT_INSTRUMENTATION=true -- npx -y @shopify/dev-mcp
+```
+
+En Copilot, las herramientas MCP van como `<servidor>/<herramienta>`; en Gemini CLI, como `mcp_<servidor>_<herramienta>`;
+en Codex y Cursor, el agente hereda las del servidor configurado. Cursor no tiene lista de herramientas por agente: los
+agentes que no escriben van con `readonly: true`.
+
+### Actualizar y desinstalar
+
+| Acción      | Comando                                           |
+| ----------- | ------------------------------------------------- |
+| Actualizar  | `/plugin marketplace update shopify-agents`       |
+| Desinstalar | `/plugin uninstall shopify-agents@shopify-agents` |
+
+## Uso
 
 ```
 @shopify-agents:shopify-reviewer revisa lo que acabo de cambiar en sections/ y en extensions/
@@ -28,7 +55,7 @@ Reinicia Claude Code o corre `/reload-plugins`. Los agentes aparecen en el typea
 No hace falta nombrarlos: "antes de hacer el deploy, corre Theme Check y revisa el diff" también delega. Para una
 sesión completa con un agente, `claude --agent shopify-agents:shopify-integration-architect`.
 
-## Que incluye
+### Que incluye
 
 | Agente                          | Que hace                                                                                                  | Skills que precarga  | Herramientas del servidor MCP                                           | Modelo    |
 | ------------------------------- | --------------------------------------------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------- | --------- |
@@ -46,25 +73,11 @@ reales. Su herramienta `feedback` queda fuera de todos los agentes, porque solo 
 Ningún agente tiene `Write` o `Edit`, y ninguno envía el campo `user_prompt` al servidor. El razonamiento detrás de
 cada decisión está en [docs/agentes.md](docs/agentes.md).
 
-## Por que existe
+### Por que existe
 
 Construido sobre la skill oficial `shopify` del [Shopify AI Toolkit](https://github.com/Shopify/Shopify-AI-Toolkit),
 sin costo y de código abierto. El toolkit trae el conocimiento; este plugin agrega lo que el toolkit no tiene:
 subagentes read-only que se quedan con el ruido y devuelven solo la señal.
-
-## Documentación
-
-### Requisitos
-
-- Claude Code con soporte de plugins.
-- Node `>= 18`, para que `npx` ejecute el servidor MCP y los scripts de la skill.
-- La skill oficial `shopify`, instalada con `npx skills add Shopify/Shopify-AI-Toolkit`. Sin ella los agentes
-  funcionan, pero degradados: Claude Code omite las skills que no encuentra y conserva el flujo de cada agente, sin la
-  tabla de temas ni las referencias que hacen precisas sus respuestas. Si la instalas como plugin
-  (`shopify-ai-toolkit@claude-plugins-official`), Claude Code la registra con el nombre del plugin delante; los agentes
-  la siguen encontrando con el tool `Skill`, pero no como skill precargada.
-- El [Shopify CLI](https://shopify.dev/docs/api/shopify-cli) para que `shopify-qa` corra Theme Check y
-  `shopify app build`.
 
 ### Como funciona
 
@@ -97,50 +110,19 @@ toolkit reconoce en cualquier proceso:
 mkdir -p ~/.config/shopify-ai-toolkit && touch ~/.config/shopify-ai-toolkit/opt-out
 ```
 
-### En otros agentes
+## Requisitos
 
-Los cinco agentes también funcionan en Gemini CLI, Codex, GitHub Copilot y Cursor. Cada versión se genera desde los archivos de
-Claude Code con `scripts/exportar.mjs`: cambian el frontmatter y los nombres de las herramientas, el texto es el
-mismo. Fuera de Claude Code no hay skills precargadas, así que cada agente empieza diciendo cuales cargar; se instalan
-con `npx skills add <repositorio> -a <agente>`.
+- Claude Code con soporte de plugins.
+- Node `>= 18`, para que `npx` ejecute el servidor MCP y los scripts de la skill.
+- La skill oficial `shopify`, instalada con `npx skills add Shopify/Shopify-AI-Toolkit`. Sin ella los agentes
+  funcionan, pero degradados: Claude Code omite las skills que no encuentra y conserva el flujo de cada agente, sin la
+  tabla de temas ni las referencias que hacen precisas sus respuestas. Si la instalas como plugin
+  (`shopify-ai-toolkit@claude-plugins-official`), Claude Code la registra con el nombre del plugin delante; los agentes
+  la siguen encontrando con el tool `Skill`, pero no como skill precargada.
+- El [Shopify CLI](https://shopify.dev/docs/api/shopify-cli) para que `shopify-qa` corra Theme Check y
+  `shopify app build`.
 
-| Agente         | Instalación                                                                                                                                                                                                                        |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Gemini CLI     | `gemini extensions install https://github.com/commentemeapp/shopify-agents`: trae los cinco agentes y el servidor MCP (`shopify-dev`)                                                                                              |
-| Codex          | Copia `adaptadores/codex/*.toml` a `~/.codex/agents/` y agrega el servidor MCP con los comandos de abajo                                                                                                                           |
-| GitHub Copilot | Copia `adaptadores/copilot/*.agent.md` a `~/.copilot/agents/` o a `.github/agents/` del proyecto; el servidor MCP va en `~/.copilot/mcp-config.json`, con el mismo `mcpServers` de [`.mcp.json`](plugins/shopify-agents/.mcp.json) |
-| Cursor         | Copia `adaptadores/cursor/*.md` a `~/.cursor/agents/` o a `.cursor/agents/` del proyecto; el servidor MCP va en `~/.cursor/mcp.json`, con el mismo `mcpServers`                                                                    |
-
-```bash
-codex mcp add shopify-dev --env OPT_OUT_INSTRUMENTATION=true -- npx -y @shopify/dev-mcp
-```
-
-En Copilot, las herramientas MCP van como `<servidor>/<herramienta>`; en Gemini CLI, como `mcp_<servidor>_<herramienta>`;
-en Codex y Cursor, el agente hereda las del servidor configurado. Cursor no tiene lista de herramientas por agente: los
-agentes que no escriben van con `readonly: true`.
-
-### Actualizar y desinstalar
-
-| Acción      | Comando                                           |
-| ----------- | ------------------------------------------------- |
-| Actualizar  | `/plugin marketplace update shopify-agents`       |
-| Desinstalar | `/plugin uninstall shopify-agents@shopify-agents` |
-
-### Estructura
-
-```
-.claude-plugin/marketplace.json       catálogo del marketplace de Claude Code
-plugins/shopify-agents/
-	.claude-plugin/plugin.json          manifiesto del plugin; mcpServers apunta a .mcp.json
-	.mcp.json                           el servidor MCP shopify-dev: npx -y @shopify/dev-mcp, sin telemetría
-	agents/                             los cinco agentes, uno por archivo
-docs/agentes.md                       por que cada agente es como es
-scripts/verificar.sh                  gate de este repositorio
-scripts/probar-mcp.mjs                arranca el servidor MCP y comprueba las herramientas que usan los agentes
-assets/                               header del README
-```
-
-### Desarrollo
+## Desarrollo
 
 Para desarrollar este repositorio necesitas **Node >= 20**, según [package.json](package.json). El requisito de
 Node >= 18 indicado arriba corresponde a ejecutar el servidor MCP. Las definiciones de los cinco agentes viven en
@@ -172,10 +154,31 @@ La versión vive en tres lugares: arriba en `.claude-plugin/marketplace.json`, e
 archivo y en `plugins/shopify-agents/.claude-plugin/plugin.json`. Súbela en los tres a la vez; sin subirla, Claude
 Code no entrega el cambio a quien ya tiene el plugin.
 
-## Contribuir · Licencia
+### Contribuir
 
 Conventional Commits, rama desde `dev` y PR contra `dev`; un agente nuevo tiene que pasar la pregunta de
 [docs/agentes.md](docs/agentes.md#por-qué-no-hay-más-agentes).
+
+## Estructura
+
+```
+.claude-plugin/marketplace.json       catálogo del marketplace de Claude Code
+plugins/shopify-agents/
+	.claude-plugin/plugin.json          manifiesto del plugin; mcpServers apunta a .mcp.json
+	.mcp.json                           el servidor MCP shopify-dev: npx -y @shopify/dev-mcp, sin telemetría
+	agents/                             los cinco agentes, uno por archivo
+docs/agentes.md                       por que cada agente es como es
+scripts/verificar.sh                  gate de este repositorio
+scripts/probar-mcp.mjs                arranca el servidor MCP y comprueba las herramientas que usan los agentes
+.github/assets/                       banner del README
+```
+
+## Licencia
+
 [MIT](./LICENSE).
+
+Contacto: hablecon@commente.me
+
+---
 
 _Hecho con amor y café por [zeluizr](https://github.com/zeluizr) y con la ayuda de [Claude](https://claude.ai/referral/Cz_UimA0NQ) ☕_
